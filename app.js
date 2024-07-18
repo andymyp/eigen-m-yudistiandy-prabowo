@@ -33,6 +33,8 @@ app.use('/api/test-auth', (req, res) => {
   });
 });
 
+app.use('/api/book', require('./routes/book'));
+
 //! Not Found
 app.all('*', (req, res) => {
   res.status(404).json({ message: 'Endpoint was not found' });
