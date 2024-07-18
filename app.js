@@ -21,6 +21,18 @@ app.use('/status', (req, res) => {
 
 app.use('/api/auth', require('./routes/auth'));
 
+//! Auth Middleware
+app.use(require('./middlewares/authentication'));
+
+//! Protected Routes
+app.use('/api/test-auth', (req, res) => {
+  res.status(200).json({ 
+    status: 1,
+    message: 'Authorized!',
+    data: req.user,
+  });
+});
+
 //! Not Found
 app.all('*', (req, res) => {
   res.status(404).json({ message: 'Endpoint was not found' });

@@ -80,7 +80,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    const accessToken = jwt.sign({ email: req.body.username }, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
+    const accessToken = jwt.sign({ username: req.body.username }, ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
 
     const sql_update = 'UPDATE admin SET access_token=? WHERE username=?';
 
