@@ -51,10 +51,21 @@ exports.borrowBook = async (req, res) => {
         const diffTime = Math.abs(now - penalty_date);
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        console.log('now', now);
-        console.log('penalty_date', penalty_date);
-        console.log('diffTime', diffTime);
-        console.log('diffDays', diffDays);
+        if (diffDays <= 3) {
+          let yyyy = penalty_date.getFullYear();
+          let mm = penalty_date.getMonth() + 1;
+          let dd = penalty_date.getDate();
+
+          if (dd < 10) dd = '0' + dd;
+          if (mm < 10) mm = '0' + mm;
+
+          const formattedToday = dd + '/' + mm + '/' + yyyy;
+
+          return res.json({
+            status: 0,
+            message: `You have penalty at ${formattedToday}! can borrow again after ${3 - diffDays} days.`,
+          });
+        }
       }
 
       const sql_get_stock = 'SELECT stock FROM book WHERE book_code=?';
@@ -122,6 +133,124 @@ exports.borrowBook = async (req, res) => {
               status: 1,
               message: 'Success',
             });
+          });
+        });
+      });
+    });
+  });
+};
+
+exports.returnBook = async (req, res) => {
+  const { error } = await transaction_function.validateBorrow(req.body);
+  if (error) {
+    return res.json({
+      status: 0,
+      message: error.details[0].message,
+    });
+  }
+
+  const sql = 'SELECT * FROM transaction WHERE member_code=? AND book_code=? AND returned=0';
+
+  const req_body = [
+    req.body.member_code,
+    req.body.book_code,
+  ];
+
+  db.query(sql, req_body, async (err, result) => {
+    if (err) {
+      return res.json({
+        status: 0,
+        message: err.message,
+      });
+    }
+
+    if (result.length === 0) {
+      return res.json({
+        status: 0,
+        message: 'This book not borrow with this member!',
+      });
+    }
+
+    const now = new Date();
+    const transaction_date = new Date(result[0].created_at);
+    const diffTime = Math.abs(now - transaction_date);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 7) {
+      const sql_penalty = 'INSERT INTO penalty (member_code) VALUE (?)';
+
+      const req_body_penalty = [
+        req.body.member_code,
+      ];
+
+      db.query(sql_penalty, req_body_penalty, async (err) => {
+        if (err) {
+          return res.json({
+            status: 0,
+            message: err.message,
+          });
+        }
+      });
+    }
+
+    const sql_get_stock = 'SELECT stock FROM book WHERE book_code=?';
+
+    const body_get_stock = [
+      req.body.book_code,
+    ];
+
+    db.query(sql_get_stock, body_get_stock, (err, book) => {
+      if (err) {
+        return res.json({
+          status: 0,
+          message: err.message,
+        });
+      }
+
+      if (book.length === 0) {
+        return res.json({
+          status: 0,
+          message: 'Book not found!',
+        });
+      }
+
+      const new_stock = book[0].stock + 1;
+
+      const sql_update_stock = 'UPDATE book SET stock=? WHERE book_code=?';
+
+      const body_update_stock = [
+        new_stock,
+        req.body.book_code,
+      ];
+
+      db.query(sql_update_stock, body_update_stock, (err) => {
+        if (err) {
+          return res.json({
+            status: 0,
+            message: err.message,
+          });
+        }
+
+        const update_transaction = 'UPDATE transaction SET returned=?, return_at=? WHERE member_code=? AND book_code=?';
+
+        const body_update_transaction = [
+          1,
+          now,
+          req.body.member_code,
+          req.body.book_code,
+        ];
+
+        db.query(update_transaction, body_update_transaction, async (err) => {
+          if (err) {
+            return res.json({
+              status: 0,
+              message: err.message,
+            });
+          }
+
+          return res.json({
+            status: 1,
+            message: 'Success',
           });
         });
       });
