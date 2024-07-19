@@ -35,6 +35,7 @@ app.use('/api/test-auth', (req, res) => {
 
 app.use('/api/book', require('./routes/book'));
 app.use('/api/member', require('./routes/member'));
+app.use('/api/transaction', require('./routes/transaction'));
 
 //! Not Found
 app.all('*', (req, res) => {
@@ -46,7 +47,7 @@ const APP_PORT = process.env.APP_PORT || 3000;
 
 database.connect((error) => {
   if (error) {
-    console.log(error.message);
+    console.log('Database connection error!');
     return;
   }
 
