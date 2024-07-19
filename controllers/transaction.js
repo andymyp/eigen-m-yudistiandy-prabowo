@@ -276,3 +276,29 @@ exports.checkBook = async (req, res) => {
     });
   });
 };
+
+exports.checkMember = async (req, res) => {
+
+  const rows = 'm.member_code, m.name, SUM(1) as borrow_book';
+  const tables = 'member m, transaction t';
+  const condition = 'm.member_code=t.member_code AND t.returned=0';
+  const group = 't.member_code';
+  const order = 'm.member_code ASC';
+
+  const sql = `SELECT ${rows} FROM ${tables} WHERE ${condition} GROUP BY ${group} ORDER BY ${order}`;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.json({
+        status: 0,
+        message: err.message,
+      });
+    }
+
+    return res.json({
+      status: 1,
+      message: 'Success',
+      data: result,
+    });
+  });
+};
