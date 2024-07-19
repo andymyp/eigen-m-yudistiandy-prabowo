@@ -47,7 +47,7 @@ const APP_PORT = process.env.APP_PORT || 3000;
 
 database.connect((error) => {
   if (error) {
-    console.log(error.message);
+    console.log('Database connection error!');
     return;
   }
 

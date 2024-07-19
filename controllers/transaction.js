@@ -257,3 +257,22 @@ exports.returnBook = async (req, res) => {
     });
   });
 };
+
+exports.checkBook = async (req, res) => {
+  const sql = 'SELECT * FROM book WHERE stock != 0 ORDER BY created_at DESC';
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.json({
+        status: 0,
+        message: err.message,
+      });
+    }
+
+    return res.json({
+      status: 1,
+      message: 'Success',
+      data: result,
+    });
+  });
+};
