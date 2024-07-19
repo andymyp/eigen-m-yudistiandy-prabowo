@@ -1,0 +1,509 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "EIGEN TEST API DOCUMENTATION",
+    "version": "1.0.0",
+    "description": "Node Js backend API with Express, MySQL, Joi, and JWT Authentication.",
+    "contact": {
+      "email": "andymyp1997@gmail.com"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter the token with the `Bearer: ` prefix, e.g. 'Bearer abcde12345'."
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Register Admin",
+        "operationId": "registerAdmin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Admin"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Login Admin",
+        "operationId": "loginAdmin",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/book/create-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "Create Book (Require login)",
+        "operationId": "createBook",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/book/list-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "List Book (Require login)",
+        "operationId": "listBook",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/book/update-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "Update Book (Require login)",
+        "operationId": "updateBook",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/book/delete-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "Delete Book (Require login)",
+        "operationId": "deleteBook",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "book_code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/member/create-member": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "Create Member (Require login)",
+        "operationId": "createMember",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/member/list-member": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "List Member (Require login)",
+        "operationId": "listMember",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/member/update-member": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "Update Member (Require login)",
+        "operationId": "updateMember",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Member"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/member/delete-member": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Member"
+        ],
+        "summary": "Delete Member (Require login)",
+        "operationId": "deleteMember",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member_code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/transaction/borrow-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Borrow Book (Require login)",
+        "operationId": "borrowBook",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/transaction/return-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Return Book (Require login)",
+        "operationId": "returnBook",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/transaction/check-book": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Check Book (Require login)",
+        "operationId": "checkBook",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/transaction/check-member": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Check Member (Require login)",
+        "operationId": "checkMember",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Admin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "username",
+        "password"
+      ]
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "Book": {
+      "type": "object",
+      "properties": {
+        "book_code": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "book_code",
+        "title",
+        "author",
+        "stock"
+      ]
+    },
+    "Member": {
+      "type": "object",
+      "properties": {
+        "member_code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "member_code",
+        "name"
+      ]
+    },
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "member_code": {
+          "type": "string"
+        },
+        "book_code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "member_code",
+        "book_code"
+      ]
+    }
+  }
+}

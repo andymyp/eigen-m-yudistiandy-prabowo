@@ -19,6 +19,8 @@ app.use('/status', (req, res) => {
   });
 });
 
+app.use('/api-docs', require('./routes/swagger'));
+
 app.use('/api/auth', require('./routes/auth'));
 
 //! Auth Middleware
